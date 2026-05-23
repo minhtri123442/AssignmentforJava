@@ -28,6 +28,10 @@ public class Book {
         }
     }
 
+    @Override
+    public String toString() {
+        return "[Mã Sách: " + id + "] " + title + " - Tác giả: " + author + " - SL: " + quantity;
+    }
     public void increaseQuantity()
     {
         quantity++;

@@ -16,11 +16,20 @@ public class Main {
 
         library.addBook(b1); library.addBook(b2); library.addBook(b3); library.addBook(b4);
 
-        Reader r1 = new Reader("R01", "Minh Dang", "minhdang@gmail.com", ReaderType.Student); // Max: 3
-        Reader r2 = new Reader("R02", "Gia Lam", "Gialam@gmail.com", ReaderType.Lecture); // Max: 5
+        //Reader r1 = new Reader("R01", "Minh Dang", "minhdang@gmail.com", ReaderType.Student); // Max: 3
+        //Reader r2 = new Reader("R02", "Gia Lam", "Gialam@gmail.com", ReaderType.Lecture); // Max: 5
+
+        Reader r1 = new Student("R01", "Minh Dang", "minhdang@gmail.com");
+        Reader r2 = new Lecturer("R02", "Gia Lam", "Gialam@gmail.com");
 
         library.addReader(r1); library.addReader(r2);
         System.out.println("Hoàn tất khởi tạo dữ liệu Sách và Độc giả!\n");
+
+        library.printBooks();
+        System.out.println();
+        library.printReaders();
+        System.out.println("\n======================================================\n");
+
 
 
         System.out.println("---  Tìm kiếm sách ---");
@@ -54,7 +63,7 @@ public class Main {
         librarian.borrowBook(library, "R02", "B02", "SLIP_05", today, dueDate1);
 
         System.out.println("\nKiểm tra ràng buộc kho: Độc giả mới R03 thử mượn tiếp cuốn B01 khi kho đã hết (bằng 0):");
-        Reader r3 = new Reader("R03", "Hoang Minh", "HoangMinh@gmail.com", ReaderType.Student);
+        Reader r3 = new Student("R03", "Hoang Minh", "HoangMinh@gmail.com");
         library.addReader(r3);
         librarian.borrowBook(library, "R03", "B01", "S06", today, dueDate1);
         System.out.println();

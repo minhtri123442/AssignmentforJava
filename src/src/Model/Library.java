@@ -14,6 +14,19 @@ public class Library {
     public void addBorrowSlip(BorrowSlip borrowSlip) {borrowSlips.add(borrowSlip);}
 
 
+
+    public void printBooks()
+    {
+        System.out.println("--------Danh sách sách-------------");
+        for(Book book : books) System.out.println(book);
+    }
+
+    public void printReaders()
+    {
+        System.out.println("-------------Danh sách độc giả-------------------------");
+        for(Reader reader : readers) System.out.println(reader);
+    }
+
     public Book findBookById(String id)
     {
         for(Book book: books)

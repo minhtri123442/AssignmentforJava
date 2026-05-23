@@ -22,8 +22,8 @@ public class Librarian {
 
         // kiem tra gioi han muon theo loai the
         long currentlyBorrowed = library.countBorrowedBooksByReader(readerId);
-        if (currentlyBorrowed >= reader.getMaxBorrowLimit()) {
-            System.out.println("Từ chối: Độc giả " + reader.getFullName() + " đã đạt giới hạn mượn (" + reader.getMaxBorrowLimit() + " cuốn).");
+        if (currentlyBorrowed >= reader.getMaxBookBorrow()) {
+            System.out.println("Từ chối: Độc giả " + reader.getFullName() + " đã đạt giới hạn mượn (" + reader.getMaxBookBorrow() + " cuốn).");
             return false;
         }
 

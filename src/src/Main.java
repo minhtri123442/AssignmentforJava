@@ -63,8 +63,10 @@ public class Main {
         librarian.borrowBook(library, "R02", "B02", "SLIP_05", today, dueDate1);
 
         System.out.println("\nKiểm tra ràng buộc kho: Độc giả mới R03 thử mượn tiếp cuốn B01 khi kho đã hết (bằng 0):");
-        Reader r3 = new Student("R03", "Hoang Minh", "HoangMinh@gmail.com");
-        library.addReader(r3);
+        //Reader r3 = new Student("R03", "Hoang Minh", "HoangMinh@gmail.com");
+        Reader sv = new Student("R001", "Le Van C", "c@student.edu");
+        Reader gv = new Lecturer("R002", "Pham Thi D", "d@uni.edu");
+        library.addReader(sv);
         librarian.borrowBook(library, "R03", "B01", "S06", today, dueDate1);
         System.out.println();
 
@@ -98,5 +100,90 @@ public class Main {
         System.out.println("(Ngày hẹn trả: " + dueDate1 + " | Ngày thực tế mang sách đi trả: " + futureDate + ")");
         librarian.returnBook(library, "SLIP_05", futureDate);
         System.out.println("=== KẾT THÚC CHƯƠNG TRÌNH RE-TEST ===");
+
+
+        System.out.println("=== Assignment 05 ===");
+
+        //Bài 1: khi thêm từ khóa abstract vào khai báo class Reader, không thể khai báo theo dạng:
+        /*
+        * Reader 01 = new Reader();
+        * vì abstract được tạo ra để ngăn chạn các dev khởi tạo nhầm đối tượng Reader không xác định loại.
+        *
+        * Trong thực tế, không hề có độc giả chung chung, khi có người vào thư viện, họ buộc phải nằm trong 2 loại
+        * là học viên(Student) và giảng viên(lecture) đẻ hệ thống có thể xác định loại(thời hạn mượn sách, hạn mức mượn,...)
+        * */
+
+
+
+
+        System.out.println("------------------bai 5------------");
+        Library lib = new Library();
+        lib.addBook(b1); lib.addBook(b2);
+        lib.addReader(sv); lib.addReader(gv);
+        lib.printBooks();
+        lib.showAllReaders(); // Gọi getInfo() — Student vs Lecturer
+        lib.showLateFees(7); // Gọi calculateLateFee() — khác nhau mỗi loại
+        System.out.println("\nHan muon:");
+        Reader[] readers = { sv, gv };
+        for (Reader r : readers) {
+            System.out.println(r.getFullName() + ": " + r.getMaxBookBorrow() + "cuon");
+        }
+        System.out.println("------------------bai (nang cao)------------");
+
+        DigitalAccount sv1 = new StudentAccount("S01", "Nguyen Van A");
+        DigitalAccount guest = new GuestAccount("Khach vang lai");
+
+        sv1.requestDownload(0); // thành công
+        sv1.requestDownload(2); // thành công (tổng 3)
+        sv1.requestDownload(3); // đạt giới hạn
+
+        guest.requestDownload(0); // thành công
+        guest.requestDownload(1); // đạt giới hạn
+
+
+
+        //lập luận:
+        /*Nhiệm vụ 1:
+        *Câu hỏi 1.1: Nên tạo một lớp cha trung gian DigitalAccount không? Hay để cả 4 lớp phẳng?
+        * Trả lời: Nên tạo 1 lớp cha DigitalAccount vì nó dễ bảo trì, không cần phải sửa
+        * từng cái if/else khi mỗi lần cần chỉnh sửa code/ thêm chức năng mới,...
+        *
+        * Câu hỏi 1.2: Lớp nào nên là abstract class, lớp nào là concrete class?
+        * Trả lời: Lớp DigitalAccount nên là abstract class vì nó lớp là lớp chung, các lớp còn lại là concrete class
+        * vì nó có quy tắc cụ thể
+        *
+        *
+        * Câu hỏi 1.3: Phương thức authenticate() và getDownloadLimit() nên là abstract hay có cài đặt mặc định?
+        * Trả lời: nó nên là abstract vì mỗi loại tài khaorn đều có các phương thức khác nhau(email,pass,opt, quét mã,không xác thực)
+        *
+        * Câu hỏi 1.4: Tại sao GuestAccount và LibraryCard KHÔNG NÊN kế thừa từ Reader?
+        *
+        * Trả lơời:  vì Reader đang có những thuộc tính mà GuestAccount không cần phải có(email, lịch sử mượn/trả sách,...)
+        * không nên kế thừa cho thàng LibraryCard vì nó là thẻ vật lí, vì nó chỉ là thẻ nhựa thôi, nó không cần phải lưu
+        * lại 1 gmail cho 1 thẻ làm gì, rất vô nghĩa, chỉ cần có id và name, thêm pass nữa là có thể sử dụng, việc gán gmail
+        * vào trong thẻ sẽ gây ra sự xuất hiện của dữ liệu rác trong hệ thống.
+        *
+        *
+        * 1. Tại sao DigitalAccount là abstract class?
+        * vì nó là hàm dùng chung chung, còn các concrete class khác thì mỗi tài khoản có 1 chức năng riêng, như StudentAccount
+        * cần email và mật khẩu để xác thực, còn LecturerAccount không cần mật khẩu mà cần mã OTP
+        *
+        *
+        * 2. Tại sao GuestAccount/LibraryCard KHÔNG kế thừa Reader?
+         * => (Gợi ý: quan hệ IS-A vs HAS-A, hoặc khái niệm Composition)
+         * sử dụng quan hệ IS-A trong Reader( vd: Student IS-A Reader)
+         * đồng thời Reader có tồn tại các thuộc tính phù hợp với Student.
+         * hoặc nếu nói về khái niệm Composition, Reader HAS-A DigitalAccount
+         * => nghĩa là 1 reader sẽ có 1 tài khoản
+         * 1 độc giả(Student) có thể sỡ hữu 1 tài khoản điện tử(StudentAccount)
+         * 1 khách vãng lai(Guest) có thể sỡ hữu 1 tài khoản(GuestAccount) để tải sách, họ không phải là 1 reader trong thư viện.
+        *
+        * 3 - Lợi thế thiết kế hiện tại:
+        * Tính mở rộng:  dễ dàng thêm các loại tài khoản mới mà không cần phải thay đổi logic code(tuân thủ Open/Closed principle)
+        * của các lớp hiện có.
+        * Tính đa hình: phương thức requestDownload() giúp việc xử lí logic tải sách trở nên đồng nhất kể cả là Student hay
+        * là Guest để giảm code thừa
+        *
+         */
     }
 }

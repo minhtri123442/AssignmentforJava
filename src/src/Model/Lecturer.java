@@ -15,5 +15,13 @@ public class Lecturer extends Reader{
         return super.toString() + " | Loại: Giảng viên | Tối đa: " + getMaxBookBorrow() + " cuốn";
     }
 
+    @Override
+    public double calculateLateFee(int daysLate) { return daysLate * 1000; }
+
+    @Override
+    public String getInfo() {
+        return "giảng viên: " + getReaderId() + " - " + getFullName()
+                + " - Email: " + getEmail() + " - Han muon: " + getMaxBookBorrow() + " cuon";
+    }
 
 }

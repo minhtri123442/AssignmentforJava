@@ -68,6 +68,23 @@ public class Library {
     }
 
 
+    public void showLateFees(int daysLate) {
+        System.out.println("=== PHI PHAT TRE HAN (" + daysLate + " ngay) ===");
+        for (Reader r : readers) {
+            // Đa hình: r.calculateLateFee() sẽ tự gọi logic của Student hoặc Lecturer
+            System.out.printf("%-25s | Fee: %,.0f VND%n", r.getFullName(), r.calculateLateFee(daysLate));
+        }
+    }
+
+    public void showAllReaders() {
+        System.out.println("=== DANH SACH DOC GIA ===");
+        for (Reader r : readers) {
+            // Đa hình: r.getInfo() sẽ tự gọi đúng method của từng lớp con
+            System.out.println(r.getInfo());
+        }
+    }
+
+
     //danh sach phieu muon qua han
     public List<BorrowSlip> getOverdueSlips(LocalDate currentDate) {
         List<BorrowSlip> overdueSlips = new ArrayList<>();

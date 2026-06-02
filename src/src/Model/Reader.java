@@ -1,5 +1,5 @@
 package Model;
-public class Reader {
+public abstract class Reader {
 
     private String readerId;
     private String fullName;
@@ -12,11 +12,9 @@ public class Reader {
         this.email = email;
     }
 
-    public int getMaxBookBorrow()
-    {
-        return 0;
-    }
-
+    public abstract int getMaxBookBorrow();
+    public abstract String getInfo();
+    public abstract double calculateLateFee(int daysLate);
     //ghi de
     @Override
     public String toString() {

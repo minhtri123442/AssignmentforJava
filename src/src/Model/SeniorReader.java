@@ -31,4 +31,16 @@ public class SeniorReader extends CardHolder {
     /*
     * không thể gọi được getInfo() nếu như hàm đó là 1 hàm trừu tượng, không có thân hàm=> không thể gọi super được.
     * */
+
+    @Override
+    protected boolean checkSpecialCondition(Book book) { return true; }
+
+    @Override
+    protected String getSpecialConditionMessage() { return ""; }
+
+    @Override
+    protected void onBorrowSuccess(Book book) {
+        super.onBorrowSuccess(book);
+        System.out.println("  ->Nguoi cao tuoi — khong thu phi phat");
+    }
 }

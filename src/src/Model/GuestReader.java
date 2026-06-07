@@ -20,4 +20,9 @@ public class GuestReader extends Reader {
     public String getInfo() {
         return super.toString() + " [Khách vãng lai - Chỉ đọc tại chỗ]";
     }
+
+    @Override
+    protected boolean checkSpecialCondition(Book book) { return false; }
+    @Override
+    protected String getSpecialConditionMessage() { return "Khach vang lai chi co the doc tai cho, khong duoc phep muon mang ve"; }
 }

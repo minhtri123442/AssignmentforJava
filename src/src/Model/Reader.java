@@ -4,7 +4,7 @@ public abstract class Reader {
     private String readerId;
     private String fullName;
     private String email;
-
+    protected int currentBorrowCount = 0;
     public Reader(String readerId, String fullName, String email)
     {
         this.readerId = readerId;
@@ -15,6 +15,46 @@ public abstract class Reader {
     public abstract int getMaxBookBorrow();
     public abstract String getInfo();
     public abstract double calculateLateFee(int daysLate);
+
+    public final BorrowResult processBorrow(Book book) {
+        // Bước 1: Kiểm tra giới hạn số lượng mượn (Cố định chung)
+        if (!checkBorrowQuota()) {
+            return new BorrowResult(false, "Da dat gioi han muon: " + getMaxBookBorrow() + " cuon");
+        }
+
+        // Bước 2: Kiểm tra điều kiện đặc thù của từng loại độc giả (Abstract)
+        if (!checkSpecialCondition(book)) {
+            return new BorrowResult(false, getSpecialConditionMessage());
+        }
+
+        // Bước 3: Trừ tồn kho sách (Cố định chung)
+        if (book.getQuantity() <= 0) {
+            return new BorrowResult(false, "Sach da het hang trong kho!");
+        }
+        book.decreaseStock();
+        currentBorrowCount++;
+
+        // Bước 4: Hook method - hành động mở rộng sau khi mượn thành công
+        onBorrowSuccess(book);
+
+        return new BorrowResult(true, "Muon thanh cong: " + book.getTitle());
+    }
+
+    // Bước 1: Cố định dùng chung nội bộ
+    private boolean checkBorrowQuota() {
+        return currentBorrowCount < getMaxBookBorrow();
+    }
+
+    // Bước 2: Ép các lớp con tự định nghĩa điều kiện đặc thù
+    protected abstract boolean checkSpecialCondition(Book book);
+    protected abstract String getSpecialConditionMessage();
+
+    // Bước 4: Hook method (Có thể override hoặc không)
+    protected void onBorrowSuccess(Book book) {
+        System.out.println(getFullName() + " muon thanh cong: " + book.getTitle());
+    }
+
+
     //ghi de
     @Override
     public String toString() {

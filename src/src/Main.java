@@ -223,13 +223,58 @@ public class Main {
 
         List<Reader> mixedList = new java.util.ArrayList<>();
 
-        mixedList.add(new Student("SV002", "Nguyen Sinh Vien", "sinhvien@edu.vn"));
-        mixedList.add(new Lecturer("GV002", "Tran Faculty", "faculty@edu.vn"));
-        mixedList.add(new SeniorReader("NCT002", "Bac Cao Tuoi", "caotuoi@gmail.com", "CC2026002"));
-        mixedList.add(new GuestReader("GUEST001", "Anh Khach Vang Lai", "guest@gmail.com"));
+        mixedList.add(new Student("SV002", "Sinh viên", "sinhvien@edu.vn"));
+        mixedList.add(new Lecturer("GV002", "Giáo viên", "faculty@edu.vn"));
+        mixedList.add(new SeniorReader("NCT002", "Người cao tuổi", "caotuoi@gmail.com", "CC2026002"));
+        mixedList.add(new GuestReader("GUEST001", "Khách vãng lai", "guest@gmail.com"));
 
         library.printFeeReport(mixedList, 5);
 
 
+        System.out.println("\n------------------ (BÀI 7) ------------");
+
+        Book rareBook = new Book("B05", "Sách quý", "Ẩn Danh", 1800, 1);
+        rareBook.setReferenceOnly(true);
+
+        Book normalBook = new Book("B06", "Java Design Patterns", "Gang of Four", 2025, 5);
+
+        Reader studentTest = new Student("SV99", "Sinh Viên", "student99@edu.vn");
+        Reader seniorTest = new SeniorReader("NCT99", "Người cao tuổi", "cuong@gmail.com", "NCT2026");
+        Reader guestTest = new GuestReader("G99", "Khách vãng lai", "guest99@gmail.com");
+
+        System.out.println("\n--- Tình huống 1: Sinh viên mượn sách quý hiếm ---");
+        BorrowResult res1 = studentTest.processBorrow(rareBook);
+        System.out.println("Kết quả: " + res1.isSuccess() + " | Tin nhắn: " + res1.getMessage());
+
+        System.out.println("\n--- Tình huống 2: Người cao tuổi mượn sách quý hiếm ---");
+        BorrowResult res2 = seniorTest.processBorrow(rareBook);
+        System.out.println("Kết quả: " + res2.isSuccess() + " | Tin nhắn: " + res2.getMessage());
+
+        System.out.println("\n--- Tình huống 3: Khách vãng lai cố tình mượn sách bình thường mang về ---");
+        BorrowResult res3 = guestTest.processBorrow(normalBook);
+        System.out.println("Kết quả: " + res3.isSuccess() + " | Tin nhắn: " + res3.getMessage());
+
+        System.out.println("\n--- Tình huống 4: Sinh viên mượn sách thường vượt quá giới hạn (Hạn mức: 3) ---");
+        studentTest.processBorrow(normalBook);
+        studentTest.processBorrow(normalBook);
+        studentTest.processBorrow(normalBook);
+        BorrowResult res4 = studentTest.processBorrow(normalBook); // Mượn cuốn 4 (Sẽ quá giới hạn)
+        System.out.println("Kết quả cuốn thứ 4: " + res4.isSuccess() + " | Tin nhắn: " + res4.getMessage());
+
+        Library stratLib = new Library();
+        stratLib.addReader(new Student("SV01", "Nguyen Van A", "svA@student.edu"));
+        stratLib.addReader(new Lecturer("GV01", "Tran Thi B", "thiB@uni.edu"));
+        stratLib.addReader(new SeniorReader("CC01", "Le Van C", "vanC@gmail.com", "CC2026005"));
+
+        System.out.println("=== Tháng bình thường ===");
+        stratLib.calculateTotalFee(7);
+
+        System.out.println("\n=== Tháng từ thiện (Giảm 50% phí) ===");
+        stratLib.setFeePolicy(new CharityFeePolicy());
+        stratLib.calculateTotalFee(7);
+
+        System.out.println("\n=== Tháng khai trương (Miễn phí) ===");
+        stratLib.setFeePolicy(new WaivedFeePolicy());
+        stratLib.calculateTotalFee(7);
     }
 }

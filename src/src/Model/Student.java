@@ -25,4 +25,13 @@ public class Student extends CardHolder {
         return "Sinh viên: " + getReaderId() + " - " + getFullName()
                 + " - Email: " + getEmail() + " - Han muon: " + getMaxBookBorrow() + " cuon";
     }
+
+    @Override
+    protected boolean checkSpecialCondition(Book book) {
+        return !book.isReferenceOnly();
+    }
+    @Override
+    protected String getSpecialConditionMessage() {
+        return "Sach tham khao chi doc tai cho — sinh vien khong duoc mang ve";
+    }
 }

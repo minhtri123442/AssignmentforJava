@@ -41,7 +41,19 @@ public class Book {
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
     public int getPublishYear() { return publishYear; }
-    public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    private boolean referenceOnly = false;
+
+    public boolean isReferenceOnly() { return referenceOnly; }
+    public void setReferenceOnly(boolean referenceOnly) { this.referenceOnly = referenceOnly; }
+
+    public void decreaseStock() {
+        if (this.quantity > 0) {
+            this.quantity--;
+        }
+    }
+    public int getQuantity() { return quantity; }
+
 }

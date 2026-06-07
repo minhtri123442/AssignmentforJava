@@ -24,4 +24,8 @@ public class Lecturer extends CardHolder{
                 + " - Email: " + getEmail() + " - Han muon: " + getMaxBookBorrow() + " cuon";
     }
 
+    @Override
+    protected boolean checkSpecialCondition(Book book) { return true; }
+    @Override
+    protected String getSpecialConditionMessage() { return ""; }
 }

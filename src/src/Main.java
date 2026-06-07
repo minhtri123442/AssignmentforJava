@@ -185,5 +185,51 @@ public class Main {
         * là Guest để giảm code thừa
         *
          */
+
+        System.out.println("------------------bai 6------------");
+
+        library.addReader(new Student("SV001", "Nguyen Van A", "sv001@student.edu"));
+        library.addReader(new Lecturer("GV001", "Tran Thi B", "tranb@uni.edu"));
+        library.addReader(new SeniorReader("CC001", "Le Van C", "levanc@gmail.com", "CC2024001"));
+
+        System.out.println("In tất cả độc giả");
+        library.printAllReaders();
+
+        System.out.println("Tính tổng phạt");
+        double total = library.calculateTotalLateFee(5);
+        System.out.printf("Tong phat neu qua han 5 ngay: %,.0f VND%n", total);
+
+        System.out.println("Tìm kiếm reader 'le van'");
+        Reader found = library.findReaderByName("le van");
+        if (found != null) {
+            System.out.println(found.getInfo());
+            System.out.println("Max borrow limit: " + found.getMaxBookBorrow());
+        }
+
+        System.out.println("\n[Yêu cầu 2.4 - Downcast in SeniorReaders]");
+        library.printSeniorReaders();
+
+
+        /*
+        * nguyên lý LSP: các lớp con phải có khả năng thay thế cho các đối tượng lớp cha mà không thay đổi tính đúng dắn
+        * của chương trình .
+        * trong đoạn code, phương thức renewCard được đặt trong lớp cha là reader, chứng tỏ là mọi reader trong hệ thống
+        * đều có thẻ và đều có thể gia hạn được, nhưng khi gặp tới GuestReader(khách vãng lai) kế thừa lớp cha là Reader
+        * thì khách vãng lai thì chỉ đọc tại chỗ và không có thẻ cũng như không thể gia hạn được, vì thế sẽ phải
+        * throw UnsupportedOperationException.
+        * => khi hàm renewAllReader() duyệt 1 list reader và gọi r.renewCard() thì khi tới thàng GuestReader sẽ bị throw
+        * lỗi =>Lớp con đã làm hỏng hành vi của lớp cha.
+        * */
+
+        List<Reader> mixedList = new java.util.ArrayList<>();
+
+        mixedList.add(new Student("SV002", "Nguyen Sinh Vien", "sinhvien@edu.vn"));
+        mixedList.add(new Lecturer("GV002", "Tran Faculty", "faculty@edu.vn"));
+        mixedList.add(new SeniorReader("NCT002", "Bac Cao Tuoi", "caotuoi@gmail.com", "CC2026002"));
+        mixedList.add(new GuestReader("GUEST001", "Anh Khach Vang Lai", "guest@gmail.com"));
+
+        library.printFeeReport(mixedList, 5);
+
+
     }
 }

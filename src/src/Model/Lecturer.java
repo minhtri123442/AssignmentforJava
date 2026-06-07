@@ -1,6 +1,6 @@
 package Model;
 
-public class Lecturer extends Reader{
+public class Lecturer extends CardHolder{
     public Lecturer(String readerId, String fullName, String email) {
         super(readerId, fullName, email);
     }

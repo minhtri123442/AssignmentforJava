@@ -98,4 +98,54 @@ public class Library {
 
     public List<BorrowSlip> getSlips() { return borrowSlips; }
 
+
+    // 1. In thông tin tất cả độc giả (Quan sát Dynamic Binding)
+    public void printAllReaders() {
+        System.out.println("=== Thông tin độc giả ===");
+        for (Reader r : readers) {
+            System.out.println(r.getInfo());
+        }
+    }
+
+    public double calculateTotalLateFee(int daysLate) {
+        double totalFee = 0.0;
+        for (Reader r : readers) {
+            totalFee += r.calculateLateFee(daysLate);
+        }
+        return totalFee;
+    }
+
+    public Reader findReaderByName(String keyword) {
+        String lowerKeyword = keyword.toLowerCase();
+        for (Reader r : readers) {
+            if (r.getFullName().toLowerCase().contains(lowerKeyword)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    public void printSeniorReaders() {
+        System.out.println("=== Danh sách độc giả người cao tuổi ===");
+        for (Reader r : readers) {
+            if (r instanceof SeniorReader) {
+                SeniorReader senior = (SeniorReader) r;
+                System.out.println(senior.getInfo() + " | Ma the NCT: " + senior.getSeniorCardNumber());
+            }
+        }
+    }
+    public void renewAllCardHolders(List<CardHolder> holders, int months) {
+        for (CardHolder h : holders) {
+            h.renewCard(months);
+        }
+    }
+    public static void printFeeReport(List<Reader> readers, int daysLate) {
+        System.out.println("=== BAO CAO TIEN PHAT (" + daysLate + " NGAY) ===");
+
+        for (Reader r : readers) {
+            double fee = r.calculateLateFee(daysLate);
+
+            System.out.printf("%s | Tien phat: %,.0f VND%n", r.getInfo(), fee);
+        }
+    }
 }

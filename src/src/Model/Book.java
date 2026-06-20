@@ -1,11 +1,12 @@
 package Model;
 
-public class Book implements Borrowable  {
+public class Book implements Borrowable, Comparable<Book>  {
     private String id;
     private String title;
     private String author;
     private int publishYear;
     private int quantity;
+    private boolean referenceOnly = false;
     private String currentBorrowerId; // null neu chua ai muon
     private String borrowDate;
 
@@ -69,8 +70,6 @@ public class Book implements Borrowable  {
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    private boolean referenceOnly = false;
-
     public boolean isReferenceOnly() { return referenceOnly; }
     public void setReferenceOnly(boolean referenceOnly) { this.referenceOnly = referenceOnly; }
 
@@ -81,4 +80,10 @@ public class Book implements Borrowable  {
     }
     public int getQuantity() { return quantity; }
 
+
+    @Override
+    public int compareTo(Book other) {
+        if (other == null) return 1;
+        return this.id.compareTo(other.getId()); // So sánh sắp xếp theo mã sách
+    }
 }

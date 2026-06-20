@@ -1,24 +1,23 @@
 package Model;
 
-public class Book {
+public class Book implements Borrowable  {
     private String id;
     private String title;
     private String author;
     private int publishYear;
     private int quantity;
+    private String currentBorrowerId; // null neu chua ai muon
+    private String borrowDate;
 
 
-    public Book(String id, String title, String author, int publishYear, int quantity) {
+
+    public Book(String id, String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publishYear = publishYear;
-        this.quantity = quantity;
+        this.currentBorrowerId = null;
     }
 
-    public boolean isAvailable() {
-        return quantity > 0;
-    }
 
     public void decreaseQuantity()
     {
@@ -32,6 +31,32 @@ public class Book {
     public String toString() {
         return "[Mã Sách: " + id + "] " + title + " - Tác giả: " + author + " - SL: " + quantity;
     }
+
+    @Override
+    public void borrowBy(String readerId, String date) {
+        if (!isAvailable()) {
+            System.out.println("Book '" + title + "' is not available.");
+            return;
+        }
+        this.currentBorrowerId = readerId;
+        this.borrowDate        = date;
+        System.out.println("Book '" + title + "' borrowed by " + readerId);
+    }
+
+    @Override
+    public void returnBook(String date) {
+        System.out.println("Book '" + title + "' returned on " + date);
+        this.currentBorrowerId = null;
+        this.borrowDate        = null;
+    }
+
+    @Override
+    public boolean isAvailable() { return currentBorrowerId == null; }
+
+    @Override
+    public String getBorrowerId() { return currentBorrowerId; }
+
+
     public void increaseQuantity()
     {
         quantity++;

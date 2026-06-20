@@ -1,15 +1,32 @@
 package Model;
-public abstract class Reader {
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+public abstract class Reader implements Notifiable {
 
     private String readerId;
     private String fullName;
     private String email;
     protected int currentBorrowCount = 0;
+    private List<String> notifications = new ArrayList<>();
     public Reader(String readerId, String fullName, String email)
     {
         this.readerId = readerId;
         this.fullName = fullName;
         this.email = email;
+    }
+
+    @Override
+    public void sendNotification(String message) {
+        notifications.add(message);
+        System.out.println("[" + fullName + "] " + message);
+    }
+
+    @Override
+    public List<String> getNotificationHistory() {
+        // Trả về list bọc unmodifiable để bảo mật dữ liệu không cho sửa từ bên ngoài
+        return Collections.unmodifiableList(notifications);
     }
 
     public abstract int getMaxBookBorrow();
